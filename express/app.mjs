@@ -1,3 +1,10 @@
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const layouts = require('express-ejs-layouts');
@@ -5,7 +12,7 @@ const path = require('path');
 const { navRoutes } = require('@contrast/test-bench-utils');
 const express = require('express');
 
-module.exports.setup = function(app) {
+export function setup(app) {
   require('./vulnerabilities/static');
   app.use('/assets', express.static(path.join(__dirname, 'public')));
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded

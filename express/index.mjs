@@ -1,4 +1,6 @@
 'use strict';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 if (process.env.CONTRAST_NEW_RELIC_KEY) {
   require('newrelic');
@@ -33,7 +35,8 @@ const pem = require('pem');
 const app = express();
 const { PORT = 3000, HOST = 'localhost', SSL, CLUSTER } = process.env;
 const isHttps = SSL === '1' ? true : false;
-require('./app').setup(app);
+import { setup } from './app.mjs';
+setup(app);
 
 const listener = function listener() {
   const { address, port } = this.address();
