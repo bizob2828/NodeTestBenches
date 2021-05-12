@@ -1,6 +1,8 @@
 'use strict';
 const { SQS, SQSClient, SendMessageCommand, ReceiveMessageCommand } = require('@aws-sdk/client-sqs');
 const { SNS, SNSClient, PublishCommand  } = require('@aws-sdk/client-sns');
+const { DynamoDBClient, PutItemCommand } = require('@aws-sdk/client-dynamodb');
+const { v4: uuid } = require('uuid');
 const sns = new SNS({
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -31,6 +33,14 @@ const sqsClient = new SQSClient({
   region: 'us-east-2'
 });
 
+const ddb = new DynamoDBClient({
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  },
+  region: 'us-east-2'
+});
+
 /**
  * @vulnerability: csp-header-insecure
  */
@@ -50,7 +60,6 @@ module.exports = async function(fastify, options) {
   });
 
   fastify.get('/aws/sqs', async (request, reply) => {
-    //await sqs.send(new SendMessageCommand({ QueueUrl: 'https://sqs.us-east-2.amazonaws.com/534933490068/nodejs-bob-test', MessageBody: 'testing' }));
     await sqs.sendMessage({ QueueUrl: 'https://sqs.us-east-2.amazonaws.com/534933490068/nodejs-bob-test', MessageBody: 'testing' });
     const data = await sqs.receiveMessage({ QueueUrl: 'https://sqs.us-east-2.amazonaws.com/534933490068/nodejs-bob-test' })
     reply.send(data)
@@ -59,6 +68,20 @@ module.exports = async function(fastify, options) {
   fastify.get('/aws/sqs-client', async (request, reply) => {
     await sqsClient.send(new SendMessageCommand({ QueueUrl: 'https://sqs.us-east-2.amazonaws.com/534933490068/nodejs-bob-test', MessageBody: 'testing' }));
     const data = await sqsClient.send(new ReceiveMessageCommand({ QueueUrl: 'https://sqs.us-east-2.amazonaws.com/534933490068/nodejs-bob-test'}));
+    reply.send(data)
+  });
+
+  fastify.get('/aws/dynamo-put', async (request, reply) => {
+    debugger;
+    const id = uuid();
+    const params = {
+      TableName: 'nodejb-bob-test',
+      Item: {
+        id: { S: id},
+        name: { S: id }
+      }
+    }
+    const data = await ddb.send(new PutItemCommand(params))
     reply.send(data)
   });
 };
