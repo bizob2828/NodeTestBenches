@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ./partials/head %>
+  </head>
+  <body>
+    <% include ./partials/header %>
+    <div class="container-fluid">
+      <div class="row">
+        <% include ./partials/nav %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">AWS SDK v3 actions</h1>
+
+          <div class="row">
+            <div class="col-xs-12 col-sm-6" style="padding-bottom: 30px;">
+            <ul>
+              <li><a href="/aws/sns">legacy SNS actions</a></li>
+              <li><a href="/aws/sqs">legacy SQS action</a></li>
+              <li><a href="/aws/sns-client">SNS Client actions</a></li>
+              <li><a href="/aws/sqs-client">SQS Client  action</a></li>
+          </div>
+          <% include ./partials/footer %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -38,6 +38,7 @@ navRoutes.forEach(({ base }) => {
 // one off routes that are not members of navroutes
 fastify.register(require('./routes/header-injection'), context);
 fastify.register(require('./routes/csp-header'), context);
+fastify.register(require('./routes/aws'), context)
 
 const start = async () => {
   try {

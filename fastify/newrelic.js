@@ -1,5 +1,4 @@
-'use strict';
-
+'use strict'
 /**
  * New Relic agent configuration.
  *
@@ -7,21 +6,46 @@
  * description of configuration variables and their potential values.
  */
 exports.config = {
+  host: 'staging-collector.newrelic.com',
+  license_key: process.env.NR_LICENSE,
+  //proxy: 'http://localhost:8080',
+  //proxy_host: 'localhost',
+  //proxy_port: '8080',
+  /*infinite_tracing: {
+    trace_observer: {
+      host: 'a140b86b-7e23-4adc-bd03-6a684a98ecb3.aws-us-east-2.tracing.staging-edge.nr-data.net'
+    }
+  },*/
   /**
    * Array of application names.
    */
-  app_name: ['Node-Test-Bench-NewRelic'],
+  app_name: ['bob-fastify-app'],
   /**
-   * Your New Relic license key.
+   * This setting controls distributed tracing.
+   * Distributed tracing lets you see the path that a request takes through your
+   * distributed system. Enabling distributed tracing changes the behavior of some
+   * New Relic features, so carefully consult the transition guide before you enable
+   * this feature: https://docs.newrelic.com/docs/transition-guide-distributed-tracing
+   * Default is false.
    */
-  license_key: process.env.NR_LICENSE,
+  distributed_tracing: {
+    /**
+     * Enables/disables distributed tracing.
+     *
+     * @env NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
+     */
+    enabled: true
+  },
+  feature_flag: {
+    fastify_instrumentation: true
+  },
   logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level: 'info'
+    level: 'trace'
   },
   /**
    * When true, all request headers except for those listed in attributes.exclude
@@ -51,4 +75,4 @@ exports.config = {
       'response.headers.x*'
     ]
   }
-};
+}
