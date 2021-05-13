@@ -2,6 +2,9 @@
 const { SQS, SQSClient, SendMessageCommand, ReceiveMessageCommand } = require('@aws-sdk/client-sqs');
 const { SNS, SNSClient, PublishCommand  } = require('@aws-sdk/client-sns');
 const { DynamoDBClient, PutItemCommand } = require('@aws-sdk/client-dynamodb');
+const { PutCommand, DynamoDBDocumentClient } = require('@aws-sdk/lib-dynamodb')
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+
 const { v4: uuid } = require('uuid');
 const sns = new SNS({
   credentials: {
@@ -41,6 +44,16 @@ const ddb = new DynamoDBClient({
   region: 'us-east-2'
 });
 
+const docClient = DynamoDBDocumentClient.from(ddb);
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  },
+  region: 'us-east-2'
+});
+
 /**
  * @vulnerability: csp-header-insecure
  */
@@ -72,7 +85,6 @@ module.exports = async function(fastify, options) {
   });
 
   fastify.get('/aws/dynamo-put', async (request, reply) => {
-    debugger;
     const id = uuid();
     const params = {
       TableName: 'nodejb-bob-test',
@@ -82,6 +94,29 @@ module.exports = async function(fastify, options) {
       }
     }
     const data = await ddb.send(new PutItemCommand(params))
+    reply.send(data)
+  });
+
+  fastify.get('/aws/dynamo-doc-put', async(request, reply) => {
+    const id = uuid();
+    const params = {
+      TableName: 'nodejb-bob-test',
+      Item: {
+        id,
+        name: id
+      }
+    }
+    const data = await docClient.send(new PutCommand(params))
+    reply.send(data)
+  });
+
+  fastify.get('/aws/s3-put', async(request, reply) => {
+    const params = {
+      Bucket: 'arn:aws:s3:us-east-2:534933490068:accesspoint/accesspoint',
+      Key: 'test',
+      Body: 'my-body'
+    }
+    const data = await s3.send(new PutObjectCommand(params))
     reply.send(data)
   });
 };
