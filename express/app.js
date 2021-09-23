@@ -20,6 +20,12 @@ module.exports.setup = function(app) {
   navRoutes.forEach(({ base }) => {
     app.use(base, require(`./vulnerabilities/${base.substring(1)}`));
   });
+  app.use(function bobMiddie(req, res, next) {
+    setTimeout(() => {
+      console.log("next!")
+      next()
+    }, 500)
+  })
   app.use('/header-injection', require('./vulnerabilities/header-injection'));
   app.use('/typecheck', require('./vulnerabilities/typecheck'));
   app.use('/express-session', require('./vulnerabilities/express-session'));

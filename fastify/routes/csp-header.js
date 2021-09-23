@@ -14,6 +14,7 @@ module.exports = async function(fastify, options) {
   ].join('; ');
 
   fastify.get('/csp-header', (request, reply) => {
+    debugger
     reply.header('Content-Security-Policy', unsafePolicy);
     reply.view('csp-header', { ...options, policy: unsafePolicy });
     return reply;
