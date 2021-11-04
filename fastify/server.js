@@ -8,20 +8,6 @@ const start = async() => {
   const { navRoutes } = require('@contrast/test-bench-utils');
   const { PORT = 3000, HOST = 'localhost' } = process.env;
 
-  fastify.use(function handlerBob(request, reply, next) {
-    setTimeout(() => {
-      debugger
-      next()
-    }, 1000)
-  })
-
-  fastify.use(function handlerBob2(request, reply, next) {
-    setTimeout(() => {
-      debugger
-      next()
-    }, 300)
-  })
-
   // setup ejs renderer
   // god damn point-of-view doesnt support layouts like every other
   // view front-end in node.
