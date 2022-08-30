@@ -34,5 +34,3 @@ export const _typeorm_Connection_prototype_query: ({ input }: {
     safe?: boolean;
     noop?: boolean;
 }) => Promise<any>;
-declare const _exports: any;
-export = _exports;

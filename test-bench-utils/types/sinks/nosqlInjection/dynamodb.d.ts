@@ -3,7 +3,7 @@ export function _aws_sdk_DynamoDB_DocumentClient_prototype_scan({ input }: {
 }, { safe, noop }?: {
     safe?: boolean;
     noop?: boolean;
-}): Promise<"NOOP" | import("aws-sdk/lib/request").PromiseResult<AWS.DynamoDB.DocumentClient.ScanOutput, AWS.AWSError>>;
+}): Promise<any>;
 export function _aws_sdk_DynamoDB_prototype_makeRequest({ input }: {
     input: string;
 }, { safe, noop }?: {
@@ -15,7 +15,7 @@ export function _aws_sdk_DynamoDB_prototype_executeStatement({ input }: {
 }, { safe, noop }?: {
     safe?: boolean;
     noop?: boolean;
-}): Promise<"NOOP" | import("aws-sdk/lib/request").PromiseResult<AWS.DynamoDB.ExecuteStatementOutput, AWS.AWSError>>;
+}): Promise<any>;
 export function _aws_sdk_client_dynamodb_ScanCommand_ComparisonOperator({ input }: {
     input: string;
 }, { safe, noop }?: {
@@ -40,4 +40,3 @@ export function _aws_sdk_client_dynamodb_ExecuteStatementCommand({ input }: {
     safe?: boolean;
     noop?: boolean;
 }): Promise<"NOOP" | import("@aws-sdk/client-dynamodb").ExecuteStatementCommandOutput>;
-import AWS = require("aws-sdk");
