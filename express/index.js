@@ -3,6 +3,9 @@
 if (process.env.CONTRAST_NEW_RELIC_KEY) {
   require('newrelic');
 }
+process.on('unhandledRejection', (err) => {
+  console.error(err)
+})
 
 const start = Date.now();
 const express = require('express');
